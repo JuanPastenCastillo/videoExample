@@ -12,20 +12,34 @@ const timerBar = document.querySelector('.timer div');
 const showUserTimeDOM = document.querySelector(".tooltiptext")
 
 media.removeAttribute('controls');
+// media2.removeAttribute('controls');
 controls.style.visibility = 'visible';
 
 play.addEventListener('click', playPauseMedia);
+
+function addShowRemoveHidden(elementToChange) {
+ elementToChange.classList.add("show")
+ elementToChange.classList.remove("hidden")
+}
+
+function addHiddenRemoveShow(elementToChange) {
+ elementToChange.classList.add("hidden")
+ elementToChange.classList.remove("show")
+}
+
 
 function stopRwdAndFwd() {
  clearInterval(intervalRwd);
  clearInterval(intervalFwd);
  rwd.classList.remove('active');
  fwd.classList.remove('active');
+
 }
 
 function playPauseMedia() {
  stopRwdAndFwd()
-
+ addHiddenRemoveShow(showUserTimeDOM)
+ showUserTimeDOM.classList.toggle("show")
  if (media.paused) {
   play.setAttribute('data-icon', 'u');
   media.play();
@@ -43,6 +57,7 @@ function stopMedia() {
  media.currentTime = 0;
  play.setAttribute('data-icon', 'P');
  stopRwdAndFwd()
+ addHiddenRemoveShow(showUserTimeDOM)
 }
 
 rwd.addEventListener('click', mediaBackward);
@@ -82,6 +97,7 @@ function mediaForward() {
 }
 
 function windBackward() {
+ addHiddenRemoveShow(showUserTimeDOM)
  if (media.currentTime <= 500) {
   stopMedia();
  } else {
@@ -90,6 +106,7 @@ function windBackward() {
 }
 
 function windForward() {
+ addHiddenRemoveShow(showUserTimeDOM)
  if (media.currentTime >= media.duration - 500) {
   stopMedia();
  } else {
@@ -137,16 +154,21 @@ function setTime() {
 
 timerWrapper.addEventListener("click", (e) => {
  stopRwdAndFwd()
+ addHiddenRemoveShow(showUserTimeDOM)
  media.currentTime = (e.layerX * media.duration) / timerWrapper.clientWidth
  media.play()
  play.setAttribute('data-icon', 'u');
 })
 
-
-timerWrapper.addEventListener("mousemove", (e) => {
- let timeWatching = (e.layerX * media.duration) / timerWrapper.clientWidth;
- showUserTimeDOM.textContent = timeCheck(timeWatching)
- showUserTimeDOM.classList.toggle("show")
+timerWrapper.addEventListener("mouseout", () => {
+ addHiddenRemoveShow(showUserTimeDOM)
 })
 
+let showTheUserTime = (e) => {
+ addShowRemoveHidden(showUserTimeDOM)
+ let timeWatching = (e.layerX * media.duration) / timerWrapper.clientWidth;
+ showUserTimeDOM.textContent = timeCheck(timeWatching)
+}
+
+timerWrapper.addEventListener("mousemove", showTheUserTime)
 
