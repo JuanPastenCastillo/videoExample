@@ -12,7 +12,6 @@ const timerBar = document.querySelector('.timer div');
 const showUserTimeDOM = document.querySelector(".tooltiptext")
 
 media.removeAttribute('controls');
-// media2.removeAttribute('controls');
 controls.style.visibility = 'visible';
 
 play.addEventListener('click', playPauseMedia);
@@ -39,7 +38,6 @@ function stopRwdAndFwd() {
 function playPauseMedia() {
  stopRwdAndFwd()
  addHiddenRemoveShow(showUserTimeDOM)
- showUserTimeDOM.classList.toggle("show")
  if (media.paused) {
   play.setAttribute('data-icon', 'u');
   media.play();
